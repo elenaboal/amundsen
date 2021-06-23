@@ -45,3 +45,9 @@ export interface FeatureWatermark {
   watermark_type: string;
   time: string;
 }
+
+export interface FeatureCode {
+  key: string;
+  source: string;
+  text: string;
+}
