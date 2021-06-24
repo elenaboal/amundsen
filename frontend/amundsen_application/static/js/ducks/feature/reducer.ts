@@ -3,6 +3,14 @@ import {
   GetFeatureRequest,
   GetFeatureResponse,
   GetFeaturePayload,
+  GetFeatureDescriptionRequest,
+  GetFeatureDescription,
+  GetFeatureDescriptionPayload,
+  GetFeatureDescriptionResponse,
+  UpdateFeatureDescriptionRequest,
+  UpdateFeatureDescriptionPayload,
+  UpdateFeatureDescriptionResponse,
+  UpdateFeatureDescription,
 } from 'ducks/feature/types';
 import { FeatureMetadata } from 'interfaces/Feature';
 
@@ -36,6 +44,70 @@ export function getFeatureFailure(
   return {
     payload,
     type: GetFeature.FAILURE,
+  };
+}
+
+export function getFeatureDescription(
+  onSuccess?: () => any,
+  onFailure?: () => any
+): GetFeatureDescriptionRequest {
+  return {
+    payload: {
+      onSuccess,
+      onFailure,
+    },
+    type: GetFeatureDescription.REQUEST,
+  };
+}
+
+export function getFeatureDescriptionSuccess(
+  payload: GetFeatureDescriptionPayload
+) {
+  return {
+    payload,
+    type: GetFeatureDescription.SUCCESS,
+  };
+}
+
+export function getFeatureDescriptionFailure(
+  payload: GetFeatureDescriptionPayload
+): GetFeatureDescriptionResponse {
+  return {
+    payload,
+    type: GetFeatureDescription.FAILURE,
+  };
+}
+
+export function updateFeatureDescription(
+  newValue: string,
+  onSuccess?: () => any,
+  onFailure?: () => any
+): UpdateFeatureDescriptionRequest {
+  return {
+    payload: {
+      newValue,
+      onSuccess,
+      onFailure,
+    },
+    type: UpdateFeatureDescription.REQUEST,
+  };
+}
+
+export function updateFeatureDescriptionSuccess(
+  payload: UpdateFeatureDescriptionPayload
+) {
+  return {
+    payload,
+    type: UpdateFeatureDescription.SUCCESS,
+  };
+}
+
+export function updateFeatureDescriptionFailure(
+  payload: UpdateFeatureDescriptionPayload
+): UpdateFeatureDescriptionResponse {
+  return {
+    payload,
+    type: UpdateFeatureDescription.FAILURE,
   };
 }
 
@@ -98,6 +170,24 @@ export default function reducer(
         isLoading: false,
         statusCode: action.payload.statusCode,
         feature: action.payload.feature,
+      };
+    case GetFeatureDescription.FAILURE:
+    case GetFeatureDescription.SUCCESS:
+      return {
+        ...state,
+        feature: {
+          ...state.feature,
+          description: action.payload.description,
+        },
+      };
+    case UpdateFeatureDescription.FAILURE:
+    case UpdateFeatureDescription.SUCCESS:
+      return {
+        ...state,
+        feature: {
+          ...state.feature,
+          description: action.payload.description,
+        },
       };
     default:
       return state;

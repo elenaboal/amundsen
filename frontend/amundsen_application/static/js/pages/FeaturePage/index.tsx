@@ -14,10 +14,13 @@ import { GetFeatureRequest } from 'ducks/feature/types';
 import Breadcrumb from 'components/Breadcrumb';
 import { getLoggingParams } from 'utils/logUtils';
 import { formatDateTimeShort } from 'utils/dateUtils';
-import { getSourceDisplayName } from 'config/config-utils';
+import { getMaxLength, getSourceDisplayName } from 'config/config-utils';
 import { ResourceType } from 'interfaces/Resources';
 
 import './styles.scss';
+import TagInput from 'components/Tags/TagInput';
+import EditableSection from 'components/EditableSection';
+import FeatureDescEditableText from './FeatureDescEditableText';
 
 interface StateFromProps {
   isLoading: boolean;
@@ -170,6 +173,15 @@ const FeaturePage: React.FC<FeaturePageProps> = ({
               <ReactMarkdown>{feature.description}</ReactMarkdown>
             </div>
           </section>
+
+          <EditableSection title="Description">
+            <FeatureDescEditableText
+              maxLength={getMaxLength('tableDescLength')}
+              value={feature.description}
+              editable
+            />
+          </EditableSection>
+
           <section className="column-layout-2">
             <section className="left-panel">
               <section className="metadata-section">
@@ -194,6 +206,12 @@ const FeaturePage: React.FC<FeaturePageProps> = ({
               </section>
             </section>
             <section className="right-panel">
+              <EditableSection title="Tags">
+                <TagInput
+                  resourceType={ResourceType.feature}
+                  uriKey={feature.key}
+                />
+              </EditableSection>
               {feature.partition_column !== null && (
                 <section className="metadata-section">
                   <h3 className="section-title text-title-w3">Partition Key</h3>
